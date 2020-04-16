@@ -48,7 +48,7 @@ func TestErrors(t *testing.T) {
 		if want := "expected 'package', found pckage"; ps[0].Message != want {
 			t.Errorf("got message %q, want %q", ps[0].Message, want)
 		}
-		if ps[0].Pos.Filename == "" {
+		if ps[0].Position.Filename == "" {
 			t.Errorf("didn't get useful position")
 		}
 	})
@@ -61,9 +61,9 @@ func TestErrors(t *testing.T) {
 		if len(ps) != 1 {
 			t.Fatalf("got %d problems, want 1", len(ps))
 		}
-		trimPosition(&ps[0].Pos)
+		trimPosition(&ps[0].Position)
 		want := Problem{
-			Pos: token.Position{
+			Position: token.Position{
 				Filename: "broken_typeerror/pkg.go",
 				Offset:   42,
 				Line:     5,
@@ -91,9 +91,9 @@ func TestErrors(t *testing.T) {
 			t.Fatalf("got %d problems, want 1", len(ps))
 		}
 
-		trimPosition(&ps[0].Pos)
+		trimPosition(&ps[0].Position)
 		want := Problem{
-			Pos: token.Position{
+			Position: token.Position{
 				Filename: "broken_parse/pkg.go",
 				Offset:   13,
 				Line:     3,

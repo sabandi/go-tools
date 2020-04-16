@@ -51,7 +51,7 @@ type Text struct {
 }
 
 func (o Text) Format(p lint.Problem) {
-	fmt.Fprintf(o.W, "%s: %s\n", relativePositionString(p.Pos), p.String())
+	fmt.Fprintf(o.W, "%s: %s\n", relativePositionString(p.Position), p.String())
 	for _, r := range p.Related {
 		fmt.Fprintf(o.W, "\t%s: %s\n", relativePositionString(r.Pos), r.Message)
 	}
@@ -95,9 +95,9 @@ func (o JSON) Format(p lint.Problem) {
 		Code:     p.Check,
 		Severity: severity(p.Severity),
 		Location: location{
-			File:   p.Pos.Filename,
-			Line:   p.Pos.Line,
-			Column: p.Pos.Column,
+			File:   p.Position.Filename,
+			Line:   p.Position.Line,
+			Column: p.Position.Column,
 		},
 		End: location{
 			File:   p.End.Filename,
@@ -132,7 +132,7 @@ type Stylish struct {
 }
 
 func (o *Stylish) Format(p lint.Problem) {
-	pos := p.Pos
+	pos := p.Position
 	if pos.Filename == "" {
 		pos.Filename = "-"
 	}
