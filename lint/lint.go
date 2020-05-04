@@ -216,7 +216,7 @@ type unusedPair struct {
 	obj unused.Object
 }
 
-func success(allowedChecks map[string]bool, res runner.Result, used map[unusedKey]bool) ([]Problem, unused.Result) {
+func success(allowedChecks map[string]bool, res runner.Result) ([]Problem, unused.Result) {
 	diags, err := res.Diagnostics()
 	if err != nil {
 		// XXX
@@ -312,6 +312,7 @@ func (l *Linter) Lint(cfg *packages.Config, patterns []string) ([]Problem, error
 	if err != nil {
 		return nil, err
 	}
+	// XXX
 	// r.goVersion = l.GoVersion
 
 	results, err := r.Run(cfg, l.Checkers, patterns)
@@ -335,7 +336,7 @@ func (l *Linter) Lint(cfg *packages.Config, patterns []string) ([]Problem, error
 			problems = append(problems, failed(res)...)
 		} else {
 			allowedAnalyzers := FilterAnalyzerNames(analyzerNames, res.Config.Checks)
-			ps, u := success(allowedAnalyzers, res, used)
+			ps, u := success(allowedAnalyzers, res)
 			problems = append(problems, filterIgnored(ps, res)...)
 
 			for _, obj := range u.Used {
